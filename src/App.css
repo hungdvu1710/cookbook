@@ -2,10 +2,96 @@
   text-align: center;
 }
 
-*{
-  font-family: 'Tahoma', Geneva, 'Verdana', sans-serif;
+body {
+  font-family: "Tahoma", Geneva, "Verdana", sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  color: #050605;
+  background-color: #b4dbbb;
+  background-image: url("./images/logocropped.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: 20%;
+  background-size: 300px;
+}
 
+.search {
+  margin-bottom: 20%;
+  margin-left: 30%;
+  margin-top: 17%;
+  display: flex;
+  height: 50%;
+  left: 50%;
+}
+
+.search input {
+  background-color: beige;
+  border: 0;
+  border-color: rgb(128, 38, 38);
+  border-radius: 2px;
+  border: top right radius 0px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  height: 30px;
+  width: 400px;
+  padding-right: 15%;
+}
+
+.searchInputs{
+  margin-top: 100px;
+  display: flex;
+}
+
+.searchIcon{
+  height: 60pts;
+  width: 50px;
+  background-color: rgb(224, 183, 48);
+  display: -webkit-box;
+  place-items: center;
+}
+
+input:focus{
+  outline: none;
+
+}
+
+search svg{
+  font-size: 35px;
+}
+
+.dataResult{
+  margin-top: 5px;
+  width: 300px;
+  height: 200px;
+  background-color: antiquewhite;
+  box-shadow: #b4dbbb;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.dataResult .dataItem{
+width: 100%;
+height: 50px;
+display: flex;
+align-items: center;
+color: black;
+
+}
+
+.dataItem p {
+  margin-left: 10px;
+}
+
+a{
+  text-decoration: none;
+
+}
+
+a:hover{
+  background-color: bisque;
+}
+
+#clearBtn{
+  cursor: pointer;
 }
