@@ -5,7 +5,7 @@ import Navbar from "./components/LandingPage/Navbar/Navbar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SignUp from "./components/LandingPage/pages/SignUp";
 import SignIn from "./components/LandingPage/pages/SignIn";
-import Home from "./components/LandingPage/pages/index";
+import Home from "./components/LandingPage/pages/NavbarIndex";
 
 import SearchBar from "./components/LandingPage/SearchBar/SearchBar";
 import RecipeData from "./components/Data.json";

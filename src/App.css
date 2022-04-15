@@ -33,7 +33,7 @@ body {
 .search input {
   margin-right: auto;
   margin-left: auto;
-  display: block;
+  display: flex;
   background-color: beige;
   border: 0;
   border-color: rgb(128, 38, 38);
