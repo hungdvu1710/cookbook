@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const Nav = styled.nav`
   background-color: #b4dbbb;
-  height: 60px;
+  height: 55px;
   display: flex;
   justify-content: space-between;
   align-items: ;
@@ -37,7 +37,7 @@ export const Bars = styled(FaBars)`
   color: #fff;
   @media screen and (max-width: 768px) {
     display: block;
-    position: absolute;
+    position: relative;
     top: 0;
     right: 0;
     transform: translate(-100%, 75%);
