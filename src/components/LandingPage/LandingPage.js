@@ -1,5 +1,6 @@
 import "./LandingPage.css";
 import CredentialModal from "./CredentialModal";
+import SearchBar from "./SearchBar";
 
 const LandingPage = () => {
   return (
@@ -14,7 +15,8 @@ const LandingPage = () => {
       {
         //Logo
       }
-      <CredentialModal/>
+      <SearchBar />
+      {/* <CredentialModal/> */}
       {
         //Recipe Search Bar
       }
