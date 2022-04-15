@@ -13,7 +13,6 @@ const Navbar = () => {
   return (
     <>
       <Nav>
-        
         <Bars />
         <NavMenu>
           <NavLink to="/signin" activeStyle={{ color: "black" }}>

@@ -38,12 +38,12 @@ body {
   padding-right: 15%;
 }
 
-.searchInputs{
+.searchInputs {
   margin-top: 100px;
   display: flex;
 }
 
-.searchIcon{
+.searchIcon {
   height: 60pts;
   width: 50px;
   background-color: rgb(224, 183, 48);
@@ -51,16 +51,15 @@ body {
   place-items: center;
 }
 
-input:focus{
+input:focus {
   outline: none;
-
 }
 
-search svg{
+search svg {
   font-size: 35px;
 }
 
-.dataResult{
+.dataResult {
   margin-top: 5px;
   width: 300px;
   height: 200px;
@@ -70,28 +69,26 @@ search svg{
   overflow-y: auto;
 }
 
-.dataResult .dataItem{
-width: 100%;
-height: 50px;
-display: flex;
-align-items: center;
-color: black;
-
+.dataResult .dataItem {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  color: black;
 }
 
 .dataItem p {
   margin-left: 10px;
 }
 
-a{
+a {
   text-decoration: none;
-
 }
 
-a:hover{
+a:hover {
   background-color: bisque;
 }
 
-#clearBtn{
+#clearBtn {
   cursor: pointer;
 }

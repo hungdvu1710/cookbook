@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "../SearchBar/SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 function SearchBar({ placeholder, data }) {
   const [filteredData, setFilteredData] = useState([]);
@@ -29,14 +28,18 @@ function SearchBar({ placeholder, data }) {
   return (
     <div className="search">
       <div className="searchInputs">
-        <input type="text" 
-        placeholder={placeholder} 
-        value={wordEntered} 
-        onChange={handleFilter}
+        <input
+          type="text"
+          placeholder={placeholder}
+          value={wordEntered}
+          onChange={handleFilter}
         />
         <div className="searchIcon">
-          {filteredData.length === 0 ? <SearchIcon/> : <CloseIcon id = "clearBtn" onClick={clearInput}
-          />}
+          {filteredData.length === 0 ? (
+            <SearchIcon />
+          ) : (
+            <CloseIcon id="clearBtn" onClick={clearInput} />
+          )}
         </div>
       </div>
 
