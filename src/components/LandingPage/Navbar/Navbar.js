@@ -9,18 +9,19 @@ import {
   NavBtnLink,
 } from "./NavbarElements";
 
-const Navbar = () => {
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+
+const Navbar = (props) => {
   return (
     <>
       <Nav>
         <Bars />
         <NavMenu>
-          <NavLink to="/signin" activeStyle={{ color: "black" }}>
-            Sign In
-          </NavLink>
-          <NavBtn>
-            <NavBtnLink to="/sign-up">Sign Up</NavBtnLink>
-          </NavBtn>
+          <ButtonGroup color="success" variant="contained" aria-label="outlined primary button group">
+            <Button onClick={props.signIn}>Sign In</Button>
+            <Button onClick={props.signUp}>Sign Up</Button>
+          </ButtonGroup>
         </NavMenu>
       </Nav>
     </>

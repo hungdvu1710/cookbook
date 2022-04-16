@@ -8,7 +8,6 @@ export const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: ;
-  padding: 0.2rem calc((100vw - 1000px) / 2);
   z-index: 9;
 `;
 
@@ -51,6 +50,8 @@ export const NavMenu = styled.div`
   align-items: center;
   width: 100vw;
   white-space: nowrap;
+  border-bottom: 1px solid antiquewhite;
+  padding-left: 10px;
 
   @media screen and (max-width: 768px) {
     display: none;

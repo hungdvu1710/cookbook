@@ -1,5 +1,6 @@
 import "./LandingPage.css";
-import CredentialModal from "./CredentialModal";
+import RecipeData from "../Data.json"; 
+import SearchBar from "./SearchBar/SearchBar";
 
 const LandingPage = () => {
   return (
@@ -15,7 +16,7 @@ const LandingPage = () => {
       {
         //Logo
       }
-      <CredentialModal/>
+      <SearchBar placeholder="Start browsing for recipes!" data={RecipeData} />
       {
         //Recipe Search Bar
       }
