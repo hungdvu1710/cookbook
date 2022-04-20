@@ -1,39 +1,41 @@
 import "./App.css";
-import { ReactDimmer } from "react-dimmer";
 import { useState } from "react";
 import React from "react";
 import Navbar from "./components/LandingPage/Navbar/Navbar";
-import CredentialModal from "./components/LandingPage/CredentialModal";
 import LandingPage from "./components/LandingPage/LandingPage";
-import { ClerkProvider } from "@clerk/clerk-react";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/clerk-react";
 
 const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
 
 function App() {
-  const [isModalOpen, setModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
+  const [register, setRegister] = useState(false);
+  const [login, setLogin] = useState(false);
   const signUp = () => {
-    setModal(true);
-    setIsLogin(false);
-  }
+    setRegister(true);
+  };
   const signIn = () => {
-    setModal(true);
-    setIsLogin(true);
-  }
+    setLogin(true);
+  };
 
   return (
     <ClerkProvider frontendApi={frontendApi}>
       <div>
-        <Navbar signUp={signUp} signIn={signIn}/>
-        <CredentialModal isLogin={isLogin} isModalOpen={isModalOpen}/>
-        <LandingPage />
+        <SignedIn>
+          <div className="user-button">
+            <UserButton />
+          </div>
+          <LandingPage />
+        </SignedIn>
 
-        <ReactDimmer
-          isOpen={isModalOpen}
-          exitDimmer={setModal}
-          zIndex={100}
-          blur={1.5}
-        />
+        <SignedOut>
+          <Navbar signUp={signUp} signIn={signIn} />
+          <LandingPage />
+        </SignedOut>
       </div>
     </ClerkProvider>
   );

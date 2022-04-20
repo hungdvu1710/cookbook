@@ -9,8 +9,10 @@ import {
   NavBtnLink,
 } from "./NavbarElements";
 
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { SignInButton, SignUpButton } from "@clerk/clerk-react";
+
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
 const Navbar = (props) => {
   return (
@@ -18,9 +20,17 @@ const Navbar = (props) => {
       <Nav>
         <Bars />
         <NavMenu>
-          <ButtonGroup color="success" variant="contained" aria-label="outlined primary button group">
-            <Button onClick={props.signIn}>Sign In</Button>
-            <Button onClick={props.signUp}>Sign Up</Button>
+          <ButtonGroup
+            color="success"
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <SignInButton mode="modal">
+              <Button>Sign In</Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button>Sign Up</Button>
+            </SignUpButton>
           </ButtonGroup>
         </NavMenu>
       </Nav>

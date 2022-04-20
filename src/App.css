@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.user-button {
+  margin: 15px
+}
+
 body {
   font-family: "Tahoma", Geneva, "Verdana", sans-serif;
   box-sizing: border-box;
