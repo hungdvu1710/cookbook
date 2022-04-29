@@ -1,8 +1,31 @@
 import "./LandingPage.css";
 import RecipeData from "../Data.json"; 
 import SearchBar from "./SearchBar/SearchBar";
+import { useUser } from "@clerk/clerk-react";
+
+const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const LandingPage = () => {
+  const {isSignedIn, user} = useUser()
+  if (isSignedIn) {
+    //send userData to BE
+    const {primaryEmailAddress, id} = user
+    const userData = {
+      email: primaryEmailAddress.emailAddress,
+      id: id
+    }
+    fetch(BE_HOST + "/api/user",
+      {
+          body: JSON.stringify(userData),
+          cache: 'no-cache',
+          mode: 'cors',
+          crossDomain:true,
+          method: 'POST',
+          headers: {'Access-Control-Allow-Origin': ['http://localhost:3000'],
+          'Content-Type': 'application/json'
+        },
+      });
+  }
   return (
     <div>
       {/** 
