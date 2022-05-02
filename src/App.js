@@ -9,19 +9,12 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/clerk-react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import KitchenPage from "./components/KitchenPage/KitchenPage";
 
 const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
 
 function App() {
-  const [register, setRegister] = useState(false);
-  const [login, setLogin] = useState(false);
-  const signUp = () => {
-    setRegister(true);
-  };
-  const signIn = () => {
-    setLogin(true);
-  };
-
   return (
     <ClerkProvider frontendApi={frontendApi}>
       <div>
@@ -29,11 +22,20 @@ function App() {
           <div className="user-button">
             <UserButton />
           </div>
-          <LandingPage />
+          <Router>
+            <div>
+              <Route exact path="/">
+                <LandingPage />
+              </Route>
+              <Route path="/kitchen">
+                <KitchenPage />
+              </Route>
+            </div>
+          </Router>
         </SignedIn>
 
         <SignedOut>
-          <Navbar signUp={signUp} signIn={signIn} />
+          <Navbar />
           <LandingPage />
         </SignedOut>
       </div>
