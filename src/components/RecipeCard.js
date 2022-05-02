@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { AccessTime } from "@mui/icons-material";
 import Button from '@mui/material/Button';
 
-const RecipeCard = () => {
+const RecipeCard = (props) => {
   return <Grid item xs={3}>
     <Paper elevation={3}>
       <img
