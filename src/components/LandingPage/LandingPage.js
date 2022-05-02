@@ -49,6 +49,13 @@ async function SendApiRequest(inputVal) {
   let data = await response.json()
   console.log(data)
   //RecipeCard(data)
+  const { hits } = data
+  hits.forEach(hit => {
+    const { recipe } = hit
+    const { image, label, totalTime, url, mealType} = recipe
+    console.log(image, label, totalTime, url, mealType)
+  })
+  
   return;
 }
 
