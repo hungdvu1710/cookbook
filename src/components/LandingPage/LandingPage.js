@@ -5,6 +5,16 @@ import { useUser } from "@clerk/clerk-react";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
+// fetch(BE_HOST + "/api/recipes", {
+//   body: JSON.stringify(userData),
+//   cache: "no-cache",
+//   mode: "cors",
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
+
 const LandingPage = () => {
   const { isSignedIn, user } = useUser();
   if (isSignedIn) {
