@@ -20,10 +20,25 @@ function SearchBar({ placeholder, data }) {
     }
   };
 
-  const clearInput = () => {
-    setFilteredData([]);
-    setWordEntered("");
-  };
+  // const clearInput = () => {
+  //   setFilteredData([]);
+  //   setWordEntered("");
+  // };
+
+  const searchRecipe = async () => {
+    let APP_ID = "98817906"
+    let API_KEY = "5bdef1c2cd6643063f7313d060069af6"
+    let response = await fetch('https://api.edamam.com/api/recipes/v2?type=public&q=' + wordEntered + '&app_id=' + APP_ID + '&app_key=' + API_KEY + '&random=true');
+    let data = await response.json()
+    const { hits } = data
+    hits.forEach(hit => {
+      const { recipe } = hit
+      const { image, label, totalTime, url, mealType} = recipe
+      console.log(image, label, totalTime, url, mealType)
+    })
+    
+    return;
+  }
 
   return (
     <div className="search">
@@ -34,16 +49,12 @@ function SearchBar({ placeholder, data }) {
           value={wordEntered}
           onChange={handleFilter}
         />
-        <div className="searchIcon">
-          {filteredData.length === 0 ? (
-            <SearchIcon />
-          ) : (
-            <CloseIcon id="clearBtn" onClick={clearInput} />
-          )}
-        </div>
+        <button className="searchIcon" onClick={searchRecipe}>
+          <SearchIcon />
+        </button>
       </div>
 
-      {filteredData.length !== 0 && (
+      {/* {filteredData.length !== 0 && (
         <div className="dataResult">
           {filteredData.slice(0, 10).map((value, key) => {
             return (
@@ -53,7 +64,7 @@ function SearchBar({ placeholder, data }) {
             );
           })}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
