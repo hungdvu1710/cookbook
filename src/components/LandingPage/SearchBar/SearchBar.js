@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
 
-function SearchBar({ placeholder, data }) {
-  const [filteredData, setFilteredData] = useState([]);
+function SearchBar({ placeholder, setSearchResult }) {
+  // const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.name.toLowerCase().includes(searchWord.toLowerCase());
-    });
+    // const newFilter = data.filter((value) => {
+    //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
+    // });
 
-    if (searchWord === "") {
-      setFilteredData([]);
-    } else {
-      setFilteredData(newFilter);
-    }
+    // if (searchWord === "") {
+    //   setFilteredData([]);
+    // } else {
+    //   setFilteredData(newFilter);
+    // }
   };
 
   // const clearInput = () => {
@@ -26,19 +25,29 @@ function SearchBar({ placeholder, data }) {
   // };
 
   const searchRecipe = async () => {
-    let APP_ID = "98817906"
-    let API_KEY = "5bdef1c2cd6643063f7313d060069af6"
-    let response = await fetch('https://api.edamam.com/api/recipes/v2?type=public&q=' + wordEntered + '&app_id=' + APP_ID + '&app_key=' + API_KEY + '&random=true');
-    let data = await response.json()
-    const { hits } = data
-    hits.forEach(hit => {
-      const { recipe } = hit
-      const { image, label, totalTime, url, mealType} = recipe
-      console.log(image, label, totalTime, url, mealType)
-    })
-    
+    let APP_ID = "98817906";
+    let API_KEY = "5bdef1c2cd6643063f7313d060069af6";
+    let response = await fetch(
+      "https://api.edamam.com/api/recipes/v2?type=public&q=" +
+        wordEntered +
+        "&app_id=" +
+        APP_ID +
+        "&app_key=" +
+        API_KEY +
+        "&random=true"
+    );
+    let data = await response.json();
+    const { hits } = data;
+    const searchResult = [];
+    hits.forEach((hit) => {
+      const { recipe } = hit;
+      const { image, label, totalTime, url, mealType } = recipe;
+      searchResult.push({ image, label, totalTime, url, mealType })
+    });
+    console.log(searchResult)
+    setSearchResult(searchResult)
     return;
-  }
+  };
 
   return (
     <div className="search">

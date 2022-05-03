@@ -1,8 +1,8 @@
 import "./LandingPage.css";
-import RecipeData from "../Data.json";
 import SearchBar from "./SearchBar/SearchBar";
 import { useUser } from "@clerk/clerk-react";
-//import RecipeCard from "./components/RecipeCard";
+import { useState } from "react";
+import RecipeCard from "../RecipeCard";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -16,6 +16,7 @@ const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 //   },
 // });
 const LandingPage = () => {
+  const [searchResult, setSearchResult] = useState([]);
   const { isSignedIn, user } = useUser();
   if (isSignedIn) {
     //send userData to BE
@@ -47,37 +48,38 @@ const LandingPage = () => {
       {
         //Logo
       }
-      <SearchBar placeholder="Start browsing for recipes!" data={RecipeData} />
-
-      <input type="text" placeholder="Recipe Search" id="userInput" />
-      <button type="button" onClick={getInputValue}>Pizza Time</button>
+      <SearchBar placeholder="Start browsing for recipes!" setSearchResult={setSearchResult} />
+      {
+        searchResult.map(result => {
+          return <RecipeCard recipe={result} key={result.url}/>
+        })
+      }
     </div>
   );
 };
 
-function getInputValue() {
-  // Selecting the input element and get its value 
-  var inputVal = document.getElementById("userInput").value;
-
-  //use the user's input to search for recipes
-  SendApiRequest(inputVal);
-}
-
-
 async function SendApiRequest(inputVal) {
-  let APP_ID = "98817906"
-  let API_KEY = "5bdef1c2cd6643063f7313d060069af6"
-  let response = await fetch('https://api.edamam.com/api/recipes/v2?type=public&q=' + inputVal + '&app_id=' + APP_ID + '&app_key=' + API_KEY + '&random=true');
-  let data = await response.json()
-  console.log(data)
+  let APP_ID = "98817906";
+  let API_KEY = "5bdef1c2cd6643063f7313d060069af6";
+  let response = await fetch(
+    "https://api.edamam.com/api/recipes/v2?type=public&q=" +
+      inputVal +
+      "&app_id=" +
+      APP_ID +
+      "&app_key=" +
+      API_KEY +
+      "&random=true"
+  );
+  let data = await response.json();
+  console.log(data);
   //RecipeCard(data)
-  const { hits } = data
-  hits.forEach(hit => {
-    const { recipe } = hit
-    const { image, label, totalTime, url, mealType} = recipe
-    console.log(image, label, totalTime, url, mealType)
-  })
-  
+  const { hits } = data;
+  hits.forEach((hit) => {
+    const { recipe } = hit;
+    const { image, label, totalTime, url, mealType } = recipe;
+    console.log(image, label, totalTime, url, mealType);
+  });
+
   return;
 }
 
@@ -108,7 +110,5 @@ async function SendApiRequest(inputVal) {
     `
   );
 }*/
-
-
 
 export default LandingPage;
