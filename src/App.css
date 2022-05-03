@@ -104,3 +104,8 @@ a:hover {
 #clearBtn {
   cursor: pointer;
 }
+
+.img {
+  width: 100%;
+  height: rem;
+}

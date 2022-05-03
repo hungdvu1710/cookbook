@@ -3,6 +3,9 @@ import { useState } from "react";
 import React from "react";
 import Navbar from "./components/LandingPage/Navbar/Navbar";
 import LandingPage from "./components/LandingPage/LandingPage";
+import RecipeCard from "./components/RecipeCard";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 import {
   ClerkProvider,
   SignedIn,
