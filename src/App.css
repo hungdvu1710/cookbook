@@ -22,8 +22,7 @@ body {
 }
 
 .search {
-  margin: 0 auto;
-  margin-bottom: 20%;
+  margin-bottom: 5%;
   margin-top: 17%;
   justify-content: center;
   display: flex;
@@ -44,8 +43,9 @@ body {
   border: top right radius 0px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  height: 30px;
-  width: 400px;
+  height: 40px;
+  width: 800px;
+  font-size: 26px;
   padding-right: 15%;
 }
 
