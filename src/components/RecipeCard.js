@@ -21,13 +21,18 @@ const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 // });
 
 const RecipeCard = (props) => {
-  const { user } = useUser();
-  const { id } = user;
+  const { isSignedIn, user } = useUser();
+  let id;
+
+  if (isSignedIn) {
+    id = user.id;
+  }
+
   const saveRecipe = () => {
     const recipeData = {
       recipe: props.recipe,
-      id: id
-    }
+      id: id,
+    };
     fetch(BE_HOST + "/api/recipes", {
       body: JSON.stringify(recipeData),
       cache: "no-cache",
@@ -37,7 +42,8 @@ const RecipeCard = (props) => {
         "Content-Type": "application/json",
       },
     });
-  }
+  };
+
   return (
     <Grid item xs={3} className="recipe-card">
       <Paper elevation={3}>
