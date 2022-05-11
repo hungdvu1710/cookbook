@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
-function SearchBar({ placeholder, setSearchResult }) {
+function SearchBar({ placeholder, setSearchResult, setNextLink }) {
   // const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
@@ -33,12 +33,18 @@ function SearchBar({ placeholder, setSearchResult }) {
         "&app_id=" +
         APP_ID +
         "&app_key=" +
-        API_KEY +
-        "&random=true"
+        API_KEY
     );
     let data = await response.json();
-    const { hits } = data;
+    const { hits, _links } = data;
     const searchResult = [];
+    if (Object.keys(_links).length !== 0) {
+      const { next } = _links
+      setNextLink(next.href)
+    } else {
+      setNextLink(null)
+    }
+    
     hits.forEach((hit) => {
       const { recipe } = hit;
       const { image, label, totalTime, url, mealType } = recipe;
