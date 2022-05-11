@@ -1,0 +1,6 @@
+.recipe-card {
+  width: fit-content;
+  display: -webkit-inline-box;
+  padding: 10px;
+  max-width: 300px;
+}

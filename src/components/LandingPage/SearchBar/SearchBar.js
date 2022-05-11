@@ -1,28 +1,58 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
 
-function SearchBar({ placeholder, data }) {
-  const [filteredData, setFilteredData] = useState([]);
+function SearchBar({ placeholder, setSearchResult, setNextLink }) {
+  // const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.name.toLowerCase().includes(searchWord.toLowerCase());
-    });
+    // const newFilter = data.filter((value) => {
+    //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
+    // });
 
-    if (searchWord === "") {
-      setFilteredData([]);
-    } else {
-      setFilteredData(newFilter);
-    }
+    // if (searchWord === "") {
+    //   setFilteredData([]);
+    // } else {
+    //   setFilteredData(newFilter);
+    // }
   };
 
-  const clearInput = () => {
-    setFilteredData([]);
-    setWordEntered("");
+  // const clearInput = () => {
+  //   setFilteredData([]);
+  //   setWordEntered("");
+  // };
+
+  const searchRecipe = async () => {
+    let APP_ID = "98817906";
+    let API_KEY = "5bdef1c2cd6643063f7313d060069af6";
+    let response = await fetch(
+      "https://api.edamam.com/api/recipes/v2?type=public&q=" +
+        wordEntered +
+        "&app_id=" +
+        APP_ID +
+        "&app_key=" +
+        API_KEY
+    );
+    let data = await response.json();
+    const { hits, _links } = data;
+    const searchResult = [];
+    if (Object.keys(_links).length !== 0) {
+      const { next } = _links
+      setNextLink(next.href)
+    } else {
+      setNextLink(null)
+    }
+    
+    hits.forEach((hit) => {
+      const { recipe } = hit;
+      const { image, label, totalTime, url, mealType } = recipe;
+      searchResult.push({ image, label, totalTime, url, mealType })
+    });
+    console.log(searchResult)
+    setSearchResult(searchResult)
+    return;
   };
 
   return (
@@ -34,16 +64,12 @@ function SearchBar({ placeholder, data }) {
           value={wordEntered}
           onChange={handleFilter}
         />
-        <div className="searchIcon">
-          {filteredData.length === 0 ? (
-            <SearchIcon />
-          ) : (
-            <CloseIcon id="clearBtn" onClick={clearInput} />
-          )}
-        </div>
+        <button className="searchIcon" onClick={searchRecipe}>
+          <SearchIcon />
+        </button>
       </div>
 
-      {filteredData.length !== 0 && (
+      {/* {filteredData.length !== 0 && (
         <div className="dataResult">
           {filteredData.slice(0, 10).map((value, key) => {
             return (
@@ -53,7 +79,7 @@ function SearchBar({ placeholder, data }) {
             );
           })}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
