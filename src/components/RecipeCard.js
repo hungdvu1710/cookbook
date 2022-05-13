@@ -10,16 +10,6 @@ import "./RecipeCard.css";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
-// fetch(BE_HOST + "/api/recipes", {
-//   body: JSON.stringify(userData),
-//   cache: "no-cache",
-//   mode: "cors",
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
-
 const RecipeCard = (props) => {
   const { isSignedIn, user } = useUser();
   let id;
@@ -30,7 +20,7 @@ const RecipeCard = (props) => {
 
   const saveRecipe = () => {
     const recipeData = {
-      recipe: props.recipe,
+      recipe: props.recipe.id,
       id: id,
     };
     fetch(BE_HOST + "/api/recipes", {
@@ -76,6 +66,14 @@ const RecipeCard = (props) => {
           <Link underline="hover" variant="body2" href={props.recipe.url}>
             GO TO RECIPE!!!
           </Link>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {isSignedIn && <Button onClick={saveRecipe}>Save Recipe</Button>}
+          </Box>
         </Box>
       </Paper>
     </Grid>
