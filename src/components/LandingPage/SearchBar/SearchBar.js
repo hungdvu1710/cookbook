@@ -58,9 +58,9 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType, uri } = recipe;
+      const { image, label, totalTime, url, mealType, uri, cautions, cuisineType, dietLabels, ingredientLines, calories } = recipe;
       const id = uri.slice(uri.indexOf('recipe_'))
-      searchResult.push({ image, label, totalTime, url, mealType, id })
+      searchResult.push({ image, label, totalTime, url, mealType, id, cautions, cuisineType, dietLabels, ingredientLines, calories })
     });
     console.log(searchResult)
     setSearchResult(searchResult)

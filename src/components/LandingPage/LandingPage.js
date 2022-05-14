@@ -43,9 +43,9 @@ const LandingPage = () => {
     }
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType, uri } = recipe;
+      const { image, label, totalTime, url, mealType, uri, cautions, cuisineType, dietLabels, ingredientLines, calories } = recipe;
       const id = uri.slice(uri.indexOf('recipe_'))
-      result.push({ image, label, totalTime, url, mealType, id })
+      result.push({ image, label, totalTime, url, mealType, id, cautions, cuisineType, dietLabels, ingredientLines, calories })
     });
     setSearchResult(result)
     return;
