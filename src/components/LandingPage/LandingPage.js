@@ -43,8 +43,9 @@ const LandingPage = () => {
     }
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType } = recipe;
-      result.push({ image, label, totalTime, url, mealType })
+      const { image, label, totalTime, url, mealType, uri, cautions, cuisineType, dietLabels, ingredientLines, calories } = recipe;
+      const id = uri.slice(uri.indexOf('recipe_'))
+      result.push({ image, label, totalTime, url, mealType, id, cautions, cuisineType, dietLabels, ingredientLines, calories })
     });
     setSearchResult(result)
     return;
@@ -55,7 +56,7 @@ const LandingPage = () => {
       <SearchBar placeholder="Start browsing for recipes!" setSearchResult={setSearchResult} setNextLink={setNextLink} />
       {
         searchResult.map(result => {
-          return <RecipeCard recipe={result} key={result.url}/>
+          return <RecipeCard recipe={result} key={result.id}/>
         })
       }
       {

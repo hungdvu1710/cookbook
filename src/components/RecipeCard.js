@@ -7,20 +7,15 @@ import Link from "@mui/material/Link";
 import { Button } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
 import "./RecipeCard.css";
+import BookmarkAddTwoToneIcon from '@mui/icons-material/BookmarkAddTwoTone';
+import MenuBookTwoToneIcon from '@mui/icons-material/MenuBookTwoTone';
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
-// fetch(BE_HOST + "/api/recipes", {
-//   body: JSON.stringify(userData),
-//   cache: "no-cache",
-//   mode: "cors",
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
-
 const RecipeCard = (props) => {
+  const showRecipeDetails = () => {
+
+  }
   const { isSignedIn, user } = useUser();
   let id;
 
@@ -30,7 +25,7 @@ const RecipeCard = (props) => {
 
   const saveRecipe = () => {
     const recipeData = {
-      recipe: props.recipe,
+      recipe: props.recipe.id,
       id: id,
     };
     fetch(BE_HOST + "/api/recipes", {
@@ -45,13 +40,20 @@ const RecipeCard = (props) => {
   };
 
   return (
-    <Grid item xs={3} className="recipe-card">
+    <Grid item xs={3} sx={{ borderRadius: 40 }} className="recipe-card">
       <Paper elevation={3}>
         <img src={props.recipe.image} alt="..." className="img" />
         <Box paddingX={1}>
-          <Typography variant="subtitle1" component="h2">
-            {props.recipe.label}
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="subtitle1" component="h2" marginLeft={0.3}>
+              {props.recipe.label}
+            </Typography>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -59,7 +61,7 @@ const RecipeCard = (props) => {
             }}
           >
             <AccessTime sx={{ width: 12.5 }} />
-            <Typography variant="body2" component="p" marginLeft={0.5}>
+            <Typography variant="body2" component="p" marginLeft={0.3}>
               {props.recipe.totalTime} Minutes
             </Typography>
           </Box>
@@ -69,13 +71,19 @@ const RecipeCard = (props) => {
               alignItems: "center",
             }}
           >
-            <Typography variant="body2" component="p" marginLeft={0.5}>
+            <Typography variant="body2" component="p" marginLeft={0.3}>
               Meal Type: {props.recipe.mealType[0]}
             </Typography>
           </Box>
-          <Link underline="hover" variant="body2" href={props.recipe.url}>
+          {/* <Link underline="hover" variant="body2" href={props.recipe.url}>
             GO TO RECIPE!!!
-          </Link>
+          </Link> */}
+          <div className="recipe-card__btn-holder">
+            <Button variant="outlined" onClick={showRecipeDetails} endIcon={<MenuBookTwoToneIcon />}>Show More </Button>
+          </div>
+          <div className="recipe-card__btn-holder">
+            {isSignedIn && <Button variant="outlined" onClick={saveRecipe} endIcon={<BookmarkAddTwoToneIcon />}>Save </Button>}
+          </div>
         </Box>
       </Paper>
     </Grid>
