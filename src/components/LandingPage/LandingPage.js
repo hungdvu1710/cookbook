@@ -4,6 +4,8 @@ import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
+import RecipeModal from "../RecipeModal";
+import { ReactDimmer } from "react-dimmer";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -11,6 +13,8 @@ const LandingPage = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [nextLink, setNextLink] = useState(null);
   const { isSignedIn, user } = useUser();
+  const [isModalOpen, setModal] = useState(true);
+  const [modalData, setModalData] = useState({});
 
   if (isSignedIn) {
     //send userData to BE
@@ -51,17 +55,30 @@ const LandingPage = () => {
     return;
   }
 
+  const openModal = (recipe) => {
+    setModal(true)
+    setModalData(recipe)
+  }
+
   return (
     <div>
       <SearchBar placeholder="Start browsing for recipes!" setSearchResult={setSearchResult} setNextLink={setNextLink} />
       {
         searchResult.map(result => {
-          return <RecipeCard recipe={result} key={result.id}/>
+          return <RecipeCard recipe={result} key={result.id} openModal={openModal}/>
         })
       }
+      {isModalOpen && <RecipeModal recipe={modalData} closeModal={() => {setModal(false)}} />}
       {
         nextLink ? <Button className="landing-page__pagination-btn" variant="contained" onClick={getNextRecipes}> NEXT </Button> : ''
       }
+
+      <ReactDimmer
+        isOpen={isModalOpen}
+        exitDimmer={setModal}
+        zIndex={100}
+        blur={1.5}
+      />
     </div>
   );
 };

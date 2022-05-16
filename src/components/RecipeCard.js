@@ -14,7 +14,7 @@ const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const RecipeCard = (props) => {
   const showRecipeDetails = () => {
-
+    props.openModal(props.recipe)
   }
   const { isSignedIn, user } = useUser();
   let id;
