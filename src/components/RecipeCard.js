@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { AccessTime } from "@mui/icons-material";
-import Link from "@mui/material/Link";
 import { Button } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
 import "./RecipeCard.css";

@@ -13,7 +13,7 @@ const LandingPage = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [nextLink, setNextLink] = useState(null);
   const { isSignedIn, user } = useUser();
-  const [isModalOpen, setModal] = useState(true);
+  const [isModalOpen, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
 
   if (isSignedIn) {
