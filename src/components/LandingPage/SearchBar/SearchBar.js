@@ -24,6 +24,12 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
   //   setWordEntered("");
   // };
 
+  //Example search to help understand structure:
+  //https://api.edamam.com/api/recipes/v2?type=public&q=salad&app_id=98817906&app_key=5bdef1c2cd6643063f7313d060069af6&diet=high-protein&diet=low-fat&diet=low-sodium&health=pork-free&health=vegetarian&cuisineType=Asian&cuisineType=Chinese&mealType=Dinner&mealType=Lunch&dishType=Main%20course&dishType=Side%20dish&excluded=lettuce&excluded=tomato
+  //Randomized search my beloved :(
+  //&random=true
+
+
   const searchRecipe = async () => {
     let APP_ID = "98817906";
     let API_KEY = "5bdef1c2cd6643063f7313d060069af6";
@@ -34,6 +40,7 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
         APP_ID +
         "&app_key=" +
         API_KEY
+        
     );
     let data = await response.json();
     const { hits, _links } = data;
