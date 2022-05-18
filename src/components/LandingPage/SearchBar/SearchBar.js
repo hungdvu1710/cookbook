@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import Stack from '@mui/material/Stack';
 
 function SearchBar({ placeholder, setSearchResult, setNextLink }) {
   // const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
+  const [userExclude, setUserExclude] = useState("");
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
+
     // const newFilter = data.filter((value) => {
     //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
     // });
@@ -18,6 +21,10 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     //   setFilteredData(newFilter);
     // }
   };
+  const noHandleFilter = (event) => {
+    const noSearchWord = event.target.value;
+    setUserExclude(noSearchWord);
+  }
 
   // const clearInput = () => {
   //   setFilteredData([]);
@@ -35,12 +42,12 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     let API_KEY = "5bdef1c2cd6643063f7313d060069af6";
     let response = await fetch(
       "https://api.edamam.com/api/recipes/v2?type=public&q=" +
-        wordEntered +
-        "&app_id=" +
-        APP_ID +
-        "&app_key=" +
-        API_KEY
-        
+      wordEntered +
+      "&app_id=" +
+      APP_ID +
+      "&app_key=" +
+      API_KEY + (userExclude ? '&excluded=' + userExclude : '')
+
     );
     let data = await response.json();
     const { hits, _links } = data;
@@ -51,7 +58,7 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     } else {
       setNextLink(null)
     }
-    
+
     hits.forEach((hit) => {
       const { recipe } = hit;
       const { image, label, totalTime, url, mealType } = recipe;
@@ -64,17 +71,27 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
 
   return (
     <div className="search">
-      <div className="searchInputs">
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={wordEntered}
-          onChange={handleFilter}
-        />
-        <button className="searchIcon" onClick={searchRecipe}>
-          <SearchIcon />
-        </button>
-      </div>
+      <Stack spacing={2}>
+        <div className="searchInputs">
+          <input
+            type="text"
+            placeholder={placeholder}
+            value={wordEntered}
+            onChange={handleFilter}
+          />
+          <button className="searchIcon" onClick={searchRecipe}>
+            <SearchIcon />
+          </button>
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder={'Ingredient to exclude?'}
+            value={userExclude}
+            onChange={noHandleFilter}
+          />
+        </div>
+      </Stack>
 
       {/* {filteredData.length !== 0 && (
         <div className="dataResult">

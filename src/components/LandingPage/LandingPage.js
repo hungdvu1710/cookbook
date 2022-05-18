@@ -53,7 +53,6 @@ const LandingPage = () => {
   return (
     <div>
       <SearchBar placeholder="Start browsing for recipes!" setSearchResult={setSearchResult} setNextLink={setNextLink} />
-      <Button variant="contained">Advanced</Button>
       {
         searchResult.map(result => {
           return <RecipeCard recipe={result} key={result.url} />
