@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useUser } from "@clerk/clerk-react";
 
 const APP_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const API_KEY = process.env.REACT_APP_EDAMAM_APP_KEY;
+const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
-function SearchBar({ placeholder, setSearchResult, setNextLink }) {
-  // const [filteredData, setFilteredData] = useState([]);
+function SearchBar({
+  placeholder,
+  setSearchResult,
+  setNextLink,
+  setSavedRecipe,
+}) {
+  const { isSignedIn, user } = useUser();
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
@@ -33,9 +40,9 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     );
     let data = await response.json();
     const { recipe } = data;
-    console.log(recipe)
+    console.log(recipe);
     return;
-  }
+  };
 
   const searchRecipe = async () => {
     let response = await fetch(
@@ -50,20 +57,54 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     const { hits, _links } = data;
     const searchResult = [];
     if (Object.keys(_links).length !== 0) {
-      const { next } = _links
-      setNextLink(next.href)
+      const { next } = _links;
+      setNextLink(next.href);
     } else {
-      setNextLink(null)
+      setNextLink(null);
     }
-    
+
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType, uri, cautions, cuisineType, dietLabels, ingredientLines, calories } = recipe;
-      const id = uri.slice(uri.indexOf('recipe_'))
-      searchResult.push({ image, label, totalTime, url, mealType, id, cautions, cuisineType, dietLabels, ingredientLines, calories })
+      const {
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        uri,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      } = recipe;
+      const id = uri.slice(uri.indexOf("recipe_"));
+      searchResult.push({
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        id,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      });
     });
-    console.log(searchResult)
-    setSearchResult(searchResult)
+
+    if (isSignedIn) {
+      //send userData to BE
+      const { id } = user;
+      await fetch(BE_HOST + "api/recipes?id=" + id, {})
+        .then((response) => response.json())
+        .then((data) => {
+          setSavedRecipe(data);
+        });
+    }
+
+    setSearchResult(searchResult);
     return;
   };
 
