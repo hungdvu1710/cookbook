@@ -75,7 +75,7 @@ const RecipeModal = (props) => {
           </Typography>
           {props.recipe.ingredientLines.map(ingredient => {
             return (
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" key={ingredient}>
               {ingredient}
             </Typography>
           )
