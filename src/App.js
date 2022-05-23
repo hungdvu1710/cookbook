@@ -10,6 +10,7 @@ import {
 } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Sidebar from "./components/KitchenPage/Sidebar";
+import Dashboard from "./components/KitchenPage/KitchenPage";
 
 const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
 
@@ -28,6 +29,7 @@ function App() {
                 <Sidebar />
               </Route>
               <Route path="/kitchen">
+                <Dashboard/>
                 <Sidebar />
               </Route>
             </div>
