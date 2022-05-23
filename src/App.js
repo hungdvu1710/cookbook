@@ -9,7 +9,8 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import KitchenPage from "./components/KitchenPage/KitchenPage";
+import Sidebar from "./components/KitchenPage/Sidebar";
+import Dashboard from "./components/KitchenPage/KitchenPage";
 
 const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
 
@@ -25,9 +26,11 @@ function App() {
             <div>
               <Route exact path="/">
                 <LandingPage />
+                <Sidebar />
               </Route>
               <Route path="/kitchen">
-                <KitchenPage />
+                <Dashboard/>
+                <Sidebar />
               </Route>
             </div>
           </Router>
