@@ -22,10 +22,15 @@ export default function Dashboard() {
     name: [
       { recipe: 1, ingredients: "abcde" },
       { recipe: 2, ingredients: "fghs" },
-      { recipe: 3, ingredients: "dsjds" },
-      { recipe: 4, ingredients: "asda" },
+      { recipe: 3, ingredients: "reaf" },
+      { recipe: 4, ingredients: "fafdsfghs" },
+      { recipe: 5, ingredients: "fadf" },
+      { recipe: 6, ingredients: "rgrhjgk" },
+      { recipe: 7, ingredients: "sdoihsaifhe" },
+
+ 
     ],
-    id: [1, 2, 3, 4],
+    id: [1],
   };
   return (
     <div className={classes.root}>
@@ -42,7 +47,7 @@ export default function Dashboard() {
               <Card>
                 <CardHeader
                   title={`recipe : ${elem.recipe}`}
-                  subheader={`bla bla : ${elem.ingredients}`}
+                  subheader={`ingredients : ${elem.ingredients}`}
                 />
                 <CardContent>
                   <Typography variant="h5" gutterBottom>
