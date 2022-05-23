@@ -6,6 +6,8 @@ import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
 import RecipeModal from "../RecipeModal";
 import { ReactDimmer } from "react-dimmer";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -36,8 +38,21 @@ const LandingPage = () => {
   }
 
   const getNextRecipes = async () => {
-    let response = await fetch(nextLink);
-    let data = await response.json();
+    let data = await fetch(nextLink)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+    if (!data) {
+      alert("Can't fetch");
+      return;
+    }
+
     const { hits, _links } = data;
     let result = searchResult;
     if (Object.keys(_links).length !== 0) {
