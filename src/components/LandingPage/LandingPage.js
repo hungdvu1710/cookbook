@@ -6,6 +6,10 @@ import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
 import RecipeModal from "../RecipeModal";
 import { ReactDimmer } from "react-dimmer";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -16,6 +20,7 @@ const LandingPage = () => {
   const [isModalOpen, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
   const [savedRecipe, setSavedRecipe] = useState([]);
+  const [isAlertBoxOpen, setAlertBox] = useState(false);
 
   if (isSignedIn) {
     //send userData to BE
@@ -36,8 +41,21 @@ const LandingPage = () => {
   }
 
   const getNextRecipes = async () => {
-    let response = await fetch(nextLink);
-    let data = await response.json();
+    let data = await fetch(nextLink)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+    if (!data) {
+      setAlertBox(true);
+      return;
+    }
+
     const { hits, _links } = data;
     let result = searchResult;
     if (Object.keys(_links).length !== 0) {
@@ -98,6 +116,25 @@ const LandingPage = () => {
 
   return (
     <div>
+      <Dialog
+        open={isAlertBoxOpen}
+        onClose={() => {
+          setAlertBox(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>
+              You've reached the limits for total number of requests per minutes
+            </strong>{" "}
+            - Please wait and try again
+          </Alert>
+        </DialogContent>
+      </Dialog>
+
       <SearchBar
         placeholder="Start browsing for recipes!"
         setSavedRecipe={setSavedRecipe}
