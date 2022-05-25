@@ -7,8 +7,6 @@ import Typography from "@mui/material/Typography";
 import { AccessTime } from "@mui/icons-material";
 import Link from "@mui/material/Link";
 
-const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
-
 const RecipeModal = (props) => {
   console.log(props.recipe);
   return (
