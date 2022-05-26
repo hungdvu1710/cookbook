@@ -2,10 +2,6 @@
   text-align: center;
 }
 
-.user-button {
-  margin: 15px
-}
-
 body {
   font-family: "Tahoma", Geneva, "Verdana", sans-serif;
   box-sizing: border-box;
@@ -13,12 +9,11 @@ body {
   padding: 0;
   color: #050605;
   background-color: #b4dbbb;
-  background-image: url("./images/logocropped.png");
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: 30%;
-  background-size: 300px;
   background-attachment: fixed;
+}
+
+.user-button {
+  margin: 15px
 }
 
 .search {
