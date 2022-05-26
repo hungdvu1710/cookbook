@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+
+}
+
+html *
+{
+   color: rgb(75, 74, 74) !important;
+   font-family:  "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+   "Lucida Sans", Arial, sans-serif !important;
 }
 
 body {
@@ -31,7 +39,7 @@ body {
   margin-right: auto;
   margin-left: auto;
   display: flex;
-  background-color: beige;
+  background-color: rgb(222, 222, 200);
   border: 0;
   border-color: rgb(128, 38, 38);
   border-radius: 2px;
