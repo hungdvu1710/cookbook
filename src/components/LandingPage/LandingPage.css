@@ -1,4 +1,29 @@
+
+
 body .landing-page__pagination-btn {
   display: block;
   margin-left: 30px;
+}
+
+body {
+  font-family: "Tahoma", Geneva, "Verdana", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #050605;
+  background-color: #b4dbbb;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: 30%;
+  background-size: 300px;
+  background-attachment: fixed;
+}
+
+#logo{
+  position: absolute;
+  height: 200px;
+  left: 40%;
+  top: 7%;
+
+
 }

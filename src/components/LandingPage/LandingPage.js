@@ -1,9 +1,14 @@
 import "./LandingPage.css";
+import image from "../LandingPage/bg_logo.png";
 import SearchBar from "./SearchBar/SearchBar";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
+import cblogo from '../LandingPage/logocropped.png';
+
+
+
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -36,33 +41,73 @@ const LandingPage = () => {
     const { hits, _links } = data;
     let result = searchResult;
     if (Object.keys(_links).length !== 0) {
-      const { next } = _links
-      setNextLink(next.href)
+      const { next } = _links;
+      setNextLink(next.href);
     } else {
-      setNextLink(null)
+      setNextLink(null);
     }
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType, uri, cautions, cuisineType, dietLabels, ingredientLines, calories } = recipe;
-      const id = uri.slice(uri.indexOf('recipe_'))
-      result.push({ image, label, totalTime, url, mealType, id, cautions, cuisineType, dietLabels, ingredientLines, calories })
+      const {
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        uri,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      } = recipe;
+      const id = uri.slice(uri.indexOf("recipe_"));
+      result.push({
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        id,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      });
     });
-    setSearchResult(result)
+    setSearchResult(result);
     return;
-  }
+  };
 
   return (
-    <div>
-      <SearchBar placeholder="Start browsing for recipes!" setSearchResult={setSearchResult} setNextLink={setNextLink} />
-      {
-        searchResult.map(result => {
-          return <RecipeCard recipe={result} key={result.id}/>
-        })
-      }
-      {
-        nextLink ? <Button className="landing-page__pagination-btn" variant="contained" onClick={getNextRecipes}> NEXT </Button> : ''
-      }
-    </div>
+    
+      <div>
+
+        <img src={cblogo} id="logo" />
+
+        <SearchBar
+          placeholder="Start browsing for recipes!"
+          setSearchResult={setSearchResult}
+          setNextLink={setNextLink}
+        />
+        {searchResult.map((result) => {
+          return <RecipeCard recipe={result} key={result.id} />;
+        })}
+        {nextLink ? (
+          <Button
+            className="landing-page__pagination-btn"
+            variant="contained"
+            onClick={getNextRecipes}
+          >
+            {" "}
+            NEXT{" "}
+          </Button>
+        ) : (
+          ""
+        )}
+      </div>
+ 
   );
 };
 
