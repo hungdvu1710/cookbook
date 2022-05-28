@@ -14,7 +14,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Sidebar from "./components/KitchenPage/Sidebar";
 import { About } from "./components/KitchenPage/About";
 import KitchenPage from "./components/KitchenPage/KitchenPage";
-import { Kitchen } from "@mui/icons-material";
+
+
 
 const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
 
@@ -50,8 +51,12 @@ function App() {
         </SignedIn>
 
         <SignedOut>
-          <Navbar />
+          <Navbar />          
           <LandingPage />
+
+           
+          
+
         </SignedOut>
       </div>
     </ClerkProvider>

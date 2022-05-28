@@ -18,7 +18,6 @@ const Navbar = (props) => {
   return (
     <>
       <Nav>
-        <Bars />
         <NavMenu>
           <ButtonGroup
             color="success"
@@ -26,10 +25,10 @@ const Navbar = (props) => {
             aria-label="outlined primary button group"
           >
             <SignInButton mode="modal">
-              <Button>Sign In</Button>
+              <Button style={{ backgroundColor: "#edc86b" }}>Sign In</Button>
             </SignInButton>
             <SignUpButton mode="modal">
-              <Button>Sign Up</Button>
+              <Button style={{ backgroundColor: "#edc86b" }}>Sign Up</Button>
             </SignUpButton>
           </ButtonGroup>
         </NavMenu>

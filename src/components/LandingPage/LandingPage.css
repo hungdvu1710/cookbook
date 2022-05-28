@@ -29,3 +29,11 @@ body {
   size: 50px;
 
 }
+
+#aboutus{
+  top: 2%;
+  position: fixed;
+  right: 3%;
+  color: rgb(68, 67, 67);    
+  
+}
