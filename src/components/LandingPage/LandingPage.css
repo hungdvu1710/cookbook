@@ -21,9 +21,11 @@ body {
 
 #logo{
   position: absolute;
-  height: 200px;
+  width: 400px;
   left: 40%;
-  top: 7%;
-
+  top: -5%;
+  height: 50%;
+  width: 22%;
+  size: 50px;
 
 }

@@ -5,7 +5,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
-import cblogo from '../LandingPage/logocropped.png';
+import cblogo from '../LandingPage/cb1.gif';
 
 
 
