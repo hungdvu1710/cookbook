@@ -1,0 +1,18 @@
+.menuIcon{
+    top: 5%;
+    position: fixed;
+    right: 3%;
+    color: rgb(68, 67, 67);    
+}
+
+.panel{
+font-family: 'Georgia';
+font-size:large;
+color: rgb(114, 82, 82);
+
+}
+
+.kitchen{
+    font: optional;
+}
+

@@ -1,9 +1,13 @@
 .App {
   text-align: center;
+
 }
 
-.user-button {
-  margin: 15px
+html *
+{
+   color: rgb(75, 74, 74) !important;
+   font-family:  "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+   "Lucida Sans", Arial, sans-serif !important;
 }
 
 body {
@@ -13,12 +17,11 @@ body {
   padding: 0;
   color: #050605;
   background-color: #b4dbbb;
-  background-image: url("./images/logocropped.png");
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: 30%;
-  background-size: 300px;
   background-attachment: fixed;
+}
+
+.user-button {
+  margin: 15px
 }
 
 .search {
@@ -36,7 +39,7 @@ body {
   margin-right: auto;
   margin-left: auto;
   display: flex;
-  background-color: beige;
+  background-color: rgb(222, 222, 200);
   border: 0;
   border-color: rgb(128, 38, 38);
   border-radius: 2px;
@@ -50,7 +53,7 @@ body {
 }
 
 .searchInputs {
-  margin-top: 100px;
+  margin-top: 0px;
   display: flex;
 }
 
@@ -98,7 +101,7 @@ a {
 }
 
 a:hover {
-  background-color: bisque;
+  background-color: #ffe4c4;
 }
 
 #clearBtn {

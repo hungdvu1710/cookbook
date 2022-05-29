@@ -1,9 +1,11 @@
 import "./LandingPage.css";
+import image from "../LandingPage/bg_logo.png";
 import SearchBar from "./SearchBar/SearchBar";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
+import cblogo from '../LandingPage/cb1.gif';
 import RecipeModal from "../RecipeModal";
 import { ReactDimmer } from "react-dimmer";
 import Alert from "@mui/material/Alert";
@@ -95,7 +97,6 @@ const LandingPage = () => {
       });
     });
     setSearchResult(result);
-
     if (isSignedIn) {
       //send userData to BE
       const { id } = user;
@@ -134,6 +135,8 @@ const LandingPage = () => {
           </Alert>
         </DialogContent>
       </Dialog>
+
+      <img src={cblogo} id="logo" />
 
       <SearchBar
         placeholder="Start browsing for recipes!"
