@@ -1,25 +1,33 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useUser } from "@clerk/clerk-react";
 
 const APP_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const API_KEY = process.env.REACT_APP_EDAMAM_APP_KEY;
+const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
+const EDAMAM_CREDENTIALS = [
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID2,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY2,
+  },
+];
 
-function SearchBar({ placeholder, setSearchResult, setNextLink }) {
-  // const [filteredData, setFilteredData] = useState([]);
+function SearchBar({
+  placeholder,
+  setSearchResult,
+  setNextLink,
+  setSavedRecipe,
+}) {
+  const { isSignedIn, user } = useUser();
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    // const newFilter = data.filter((value) => {
-    //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
-    // });
-
-    // if (searchWord === "") {
-    //   setFilteredData([]);
-    // } else {
-    //   setFilteredData(newFilter);
-    // }
   };
 
   const searchRecipeById = async (id) => {
@@ -33,37 +41,82 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
     );
     let data = await response.json();
     const { recipe } = data;
-    console.log(recipe)
+    console.log(recipe);
     return;
-  }
+  };
 
-  const searchRecipe = async () => {
-    let response = await fetch(
+  const searchRecipe = async (index) => {
+    let data = await fetch(
       "https://api.edamam.com/api/recipes/v2?type=public&q=" +
         wordEntered +
         "&app_id=" +
-        APP_ID +
+        EDAMAM_CREDENTIALS[index].APP_ID +
         "&app_key=" +
-        API_KEY
-    );
-    let data = await response.json();
+        EDAMAM_CREDENTIALS[index].API_KEY
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+    if (!data) {
+      return searchRecipe((index + 1)%EDAMAM_CREDENTIALS.length)
+    }
     const { hits, _links } = data;
     const searchResult = [];
     if (Object.keys(_links).length !== 0) {
-      const { next } = _links
-      setNextLink(next.href)
+      const { next } = _links;
+      setNextLink(next.href);
     } else {
-      setNextLink(null)
+      setNextLink(null);
     }
-    
+
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType, uri, cautions, cuisineType, dietLabels, ingredientLines, calories } = recipe;
-      const id = uri.slice(uri.indexOf('recipe_'))
-      searchResult.push({ image, label, totalTime, url, mealType, id, cautions, cuisineType, dietLabels, ingredientLines, calories })
+      const {
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        uri,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      } = recipe;
+      const id = uri.slice(uri.indexOf("recipe_"));
+      searchResult.push({
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        id,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      });
     });
-    console.log(searchResult)
-    setSearchResult(searchResult)
+
+    if (isSignedIn) {
+      //send userData to BE
+      const { id } = user;
+      await fetch(BE_HOST + "api/recipes?id=" + id, {})
+        .then((response) => response.json())
+        .then((data) => {
+          setSavedRecipe(data);
+        });
+    }
+
+    setSearchResult(searchResult);
     return;
   };
 
@@ -76,7 +129,7 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
           value={wordEntered}
           onChange={handleFilter}
         />
-        <button className="searchIcon" onClick={searchRecipe}>
+        <button className="searchIcon" onClick={() => {searchRecipe(0)}}>
           <SearchIcon />
         </button>
       </div>

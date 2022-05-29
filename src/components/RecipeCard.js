@@ -3,19 +3,21 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { AccessTime } from "@mui/icons-material";
-import Link from "@mui/material/Link";
 import { Button } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
 import "./RecipeCard.css";
-import BookmarkAddTwoToneIcon from '@mui/icons-material/BookmarkAddTwoTone';
-import MenuBookTwoToneIcon from '@mui/icons-material/MenuBookTwoTone';
+import { useState } from "react";
+import BookmarkAddTwoToneIcon from "@mui/icons-material/BookmarkAddTwoTone";
+import BookmarkAddedTwoToneIcon from "@mui/icons-material/BookmarkAddedTwoTone";
+import MenuBookTwoToneIcon from "@mui/icons-material/MenuBookTwoTone";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const RecipeCard = (props) => {
+  const [isSavedDisabled, setIsSavedDisabled] = useState(props.isSavedDisabled);
   const showRecipeDetails = () => {
-
-  }
+    props.openModal(props.recipe);
+  };
   const { isSignedIn, user } = useUser();
   let id;
 
@@ -24,6 +26,7 @@ const RecipeCard = (props) => {
   }
 
   const saveRecipe = () => {
+    setIsSavedDisabled(true);
     const recipeData = {
       recipe: props.recipe.id,
       id: id,
@@ -79,10 +82,33 @@ const RecipeCard = (props) => {
             GO TO RECIPE!!!
           </Link> */}
           <div className="recipe-card__btn-holder">
-            <Button variant="outlined" onClick={showRecipeDetails} endIcon={<MenuBookTwoToneIcon />}>Show More </Button>
+            <Button
+              variant="outlined"
+              onClick={showRecipeDetails}
+              endIcon={<MenuBookTwoToneIcon />}
+            >
+              Show More{" "}
+            </Button>
           </div>
           <div className="recipe-card__btn-holder">
-            {isSignedIn && <Button variant="outlined" onClick={saveRecipe} endIcon={<BookmarkAddTwoToneIcon />}>Save </Button>}
+            {isSignedIn &&
+              (isSavedDisabled ? (
+                <Button
+                  variant="outlined"
+                  disabled
+                  endIcon={<BookmarkAddedTwoToneIcon />}
+                >
+                  Saved{" "}
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  onClick={saveRecipe}
+                  endIcon={<BookmarkAddTwoToneIcon />}
+                >
+                  Save{" "}
+                </Button>
+              ))}
           </div>
         </Box>
       </Paper>

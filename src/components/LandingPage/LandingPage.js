@@ -6,9 +6,12 @@ import { useState } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
 import cblogo from '../LandingPage/cb1.gif';
-
-
-
+import RecipeModal from "../RecipeModal";
+import { ReactDimmer } from "react-dimmer";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -16,6 +19,10 @@ const LandingPage = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [nextLink, setNextLink] = useState(null);
   const { isSignedIn, user } = useUser();
+  const [isModalOpen, setModal] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [savedRecipe, setSavedRecipe] = useState([]);
+  const [isAlertBoxOpen, setAlertBox] = useState(false);
 
   if (isSignedIn) {
     //send userData to BE
@@ -24,7 +31,7 @@ const LandingPage = () => {
       email: primaryEmailAddress.emailAddress,
       id: id,
     };
-    fetch(BE_HOST + "/api/user", {
+    fetch(BE_HOST + "api/user", {
       body: JSON.stringify(userData),
       cache: "no-cache",
       mode: "cors",
@@ -36,8 +43,21 @@ const LandingPage = () => {
   }
 
   const getNextRecipes = async () => {
-    let response = await fetch(nextLink);
-    let data = await response.json();
+    let data = await fetch(nextLink)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+    if (!data) {
+      setAlertBox(true);
+      return;
+    }
+
     const { hits, _links } = data;
     let result = searchResult;
     if (Object.keys(_links).length !== 0) {
@@ -77,37 +97,92 @@ const LandingPage = () => {
       });
     });
     setSearchResult(result);
+    if (isSignedIn) {
+      //send userData to BE
+      const { id } = user;
+      await fetch(BE_HOST + "api/recipes?id=" + id, {})
+        .then((response) => response.json())
+        .then((data) => {
+          setSavedRecipe(data);
+        });
+    }
+
     return;
   };
 
+  const openModal = (recipe) => {
+    setModal(true);
+    setModalData(recipe);
+  };
+
   return (
-    
-      <div>
+    <div>
+      <Dialog
+        open={isAlertBoxOpen}
+        onClose={() => {
+          setAlertBox(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>
+              You've reached the limits for total number of requests per minutes
+            </strong>{" "}
+            - Please wait and try again
+          </Alert>
+        </DialogContent>
+      </Dialog>
 
-        <img src={cblogo} id="logo" />
+      <img src={cblogo} id="logo" />
 
-        <SearchBar
-          placeholder="Start browsing for recipes!"
-          setSearchResult={setSearchResult}
-          setNextLink={setNextLink}
+      <SearchBar
+        placeholder="Start browsing for recipes!"
+        setSavedRecipe={setSavedRecipe}
+        setSearchResult={setSearchResult}
+        setNextLink={setNextLink}
+      />
+      {searchResult.map((result) => {
+        const isSavedDisabled = savedRecipe.includes(result.id);
+        return (
+          <RecipeCard
+            recipe={result}
+            key={result.id}
+            openModal={openModal}
+            isSavedDisabled={isSavedDisabled}
+          />
+        );
+      })}
+      {isModalOpen && (
+        <RecipeModal
+          recipe={modalData}
+          closeModal={() => {
+            setModal(false);
+          }}
         />
-        {searchResult.map((result) => {
-          return <RecipeCard recipe={result} key={result.id} />;
-        })}
-        {nextLink ? (
-          <Button
-            className="landing-page__pagination-btn"
-            variant="contained"
-            onClick={getNextRecipes}
-          >
-            {" "}
-            NEXT{" "}
-          </Button>
-        ) : (
-          ""
-        )}
-      </div>
- 
+      )}
+      {nextLink ? (
+        <Button
+          className="landing-page__pagination-btn"
+          variant="contained"
+          onClick={getNextRecipes}
+        >
+          {" "}
+          NEXT{" "}
+        </Button>
+      ) : (
+        ""
+      )}
+
+      <ReactDimmer
+        isOpen={isModalOpen}
+        exitDimmer={setModal}
+        zIndex={100}
+        blur={1.5}
+      />
+    </div>
   );
 };
 
