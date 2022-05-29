@@ -85,6 +85,8 @@ const RecipeCard = (props) => {
             <Button
               variant="outlined"
               onClick={showRecipeDetails}
+              className="recipe-card__btn"
+              sx={{ borderColor: '#1b5e20' }}
               endIcon={<MenuBookTwoToneIcon />}
             >
               Show More{" "}
@@ -104,6 +106,8 @@ const RecipeCard = (props) => {
                 <Button
                   variant="outlined"
                   onClick={saveRecipe}
+                  className="recipe-card__btn"
+                  sx={{ borderColor: '#1b5e20' }}
                   endIcon={<BookmarkAddTwoToneIcon />}
                 >
                   Save{" "}

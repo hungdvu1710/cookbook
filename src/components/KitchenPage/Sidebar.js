@@ -44,7 +44,7 @@ export default function Sidebar() {
             <ListItemIcon>
               <FoodBankIcon />
             </ListItemIcon>
-            <ListItemText primary={"My Kitchen"} />
+            <ListItemText primary={"My Kitchen"} sx={{ color: 'rgba(40, 38, 38)' }}/>
           </ListItem>
         </Link>
 
@@ -53,7 +53,7 @@ export default function Sidebar() {
             <ListItemIcon>
               <SearchIcon />
             </ListItemIcon>
-            <ListItemText primary={"Search"} />
+            <ListItemText primary={"Search"} sx={{ color: 'rgba(40, 38, 38)' }}/>
           </ListItem>
         </Link>
 
@@ -62,7 +62,7 @@ export default function Sidebar() {
             <ListItemIcon>
               <LightbulbIcon />
             </ListItemIcon>
-            <ListItemText primary={"About"} />
+            <ListItemText primary={"About"} sx={{ color: 'rgba(40, 38, 38)' }}/>
           </ListItem>
         </Link>
       </List>
@@ -75,7 +75,7 @@ export default function Sidebar() {
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>
             {" "}
-            <MenuIcon className="menuIcon" sx={{ fontSize: 45 }}/>
+            <MenuIcon className="menuIcon" sx={{ fontSize: 45, color: '#1b5e20' }}/>
           </Button>
           <Drawer
             PaperProps={{
