@@ -135,8 +135,10 @@ const LandingPage = () => {
           </Alert>
         </DialogContent>
       </Dialog>
-
-      <img src={cblogo} id="logo" />
+      
+      <div className="landing-page__logo-holder">
+        <img src={cblogo} id="logo" alt="logo"/>
+      </div>
 
       <SearchBar
         placeholder="Start browsing for recipes!"

@@ -15,15 +15,11 @@ import Sidebar from "./components/KitchenPage/Sidebar";
 import { About } from "./components/KitchenPage/About";
 import KitchenPage from "./components/KitchenPage/KitchenPage";
 
-
-
 const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
 
 function App() {
   return (
     <ClerkProvider frontendApi={frontendApi}>
-
-    
       <div>
         <SignedIn>
           <div className="user-button">
@@ -37,26 +33,21 @@ function App() {
               </Route>
 
               <Route path="/kitchen">
-                <KitchenPage/>
+                <KitchenPage />
                 <Sidebar />
               </Route>
 
               <Route path="/about">
-                <About/>
+                <About />
                 <Sidebar />
-
               </Route>
             </div>
           </Router>
         </SignedIn>
 
         <SignedOut>
-          <Navbar />          
+          <Navbar />
           <LandingPage />
-
-           
-          
-
         </SignedOut>
       </div>
     </ClerkProvider>

@@ -22,7 +22,7 @@ return (
       <div className='item-container'>
         {savedRecipes.map((savedRecipes) => (
           <div className='card' key={savedRecipes.id}>
-            <img src={savedRecipes.image} alt='' />
+            <img src={savedRecipes.image} alt='' className='kitchen-page__img'/>
             <h3>{savedRecipes.brand}</h3>
             <p>{savedRecipes.item}</p>
           </div>

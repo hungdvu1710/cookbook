@@ -19,15 +19,14 @@ body {
   background-attachment: fixed;
 }
 
-#logo{
-  position: absolute;
-  width: 400px;
-  left: 40%;
-  top: -5%;
-  height: 50%;
-  width: 22%;
-  size: 50px;
+.landing-page__logo-holder {
+  margin: 10px;
+  text-align: center;
+}
 
+#logo{
+  max-height: 50%;
+  max-width: 22%;
 }
 
 #aboutus{
