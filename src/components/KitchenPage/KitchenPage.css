@@ -1,0 +1,49 @@
+h1 {
+  text-align: center;
+}
+.kitchen-page__item-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 10px;
+}
+.kitchen-page__card {
+  background-color: #5bcd5b;
+  text-align: center;
+  padding: 10px;
+  width: 300px;
+  border-radius: 5px;
+  padding: 1em;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.kitchen-page__img {
+  max-height: 250px;
+  width: auto;
+}
+
+body {
+  background-image: none;
+}
+
+
+#hi{
+  bottom: -250px;
+  border: 1px solid rgb(216, 216, 171) ;
+  width: 0.5 vw;
+  height: 1 vh;
+  border: 15px solid green;
+  padding: 50px;
+  margin: 20px;
+}
+#pic {
+ 
+
+  position: relative;
+  width: 400px;
+  left: 40%;
+  top: 0%;
+  height: 50%;
+  width: 22%;
+  size: 50px;
+}

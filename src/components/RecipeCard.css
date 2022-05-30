@@ -8,3 +8,7 @@
 .recipe-card__btn-holder {
   margin: 5px 0 10px;
 }
+
+.recipe-card__btn {
+  color: rgb(40, 38, 38) !important;
+}

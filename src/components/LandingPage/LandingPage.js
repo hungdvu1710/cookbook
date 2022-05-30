@@ -1,9 +1,11 @@
 import "./LandingPage.css";
+import image from "../LandingPage/bg_logo.png";
 import SearchBar from "./SearchBar/SearchBar";
 import { useUser } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
+import cblogo from '../LandingPage/cb1.gif';
 import RecipeModal from "../RecipeModal";
 import { ReactDimmer } from "react-dimmer";
 import Alert from "@mui/material/Alert";
@@ -22,23 +24,25 @@ const LandingPage = () => {
   const [savedRecipe, setSavedRecipe] = useState([]);
   const [isAlertBoxOpen, setAlertBox] = useState(false);
 
-  if (isSignedIn) {
-    //send userData to BE
-    const { primaryEmailAddress, id } = user;
-    const userData = {
-      email: primaryEmailAddress.emailAddress,
-      id: id,
-    };
-    fetch(BE_HOST + "api/user", {
-      body: JSON.stringify(userData),
-      cache: "no-cache",
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
+  useEffect(() => {
+    if (isSignedIn) {
+      //send userData to BE
+      const { primaryEmailAddress, id } = user;
+      const userData = {
+        email: primaryEmailAddress.emailAddress,
+        id: id,
+      };
+      fetch(BE_HOST + "api/user", {
+        body: JSON.stringify(userData),
+        cache: "no-cache",
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+  }, [isSignedIn, user])
 
   const getNextRecipes = async () => {
     let data = await fetch(nextLink)
@@ -95,7 +99,6 @@ const LandingPage = () => {
       });
     });
     setSearchResult(result);
-
     if (isSignedIn) {
       //send userData to BE
       const { id } = user;
@@ -134,6 +137,10 @@ const LandingPage = () => {
           </Alert>
         </DialogContent>
       </Dialog>
+      
+      <div className="landing-page__logo-holder">
+        <img src={cblogo} id="logo" alt="logo"/>
+      </div>
 
       <SearchBar
         placeholder="Start browsing for recipes!"
@@ -142,6 +149,9 @@ const LandingPage = () => {
         setNextLink={setNextLink}
       />
       {searchResult.map((result) => {
+        if (!result) {
+          return ''
+        }
         const isSavedDisabled = savedRecipe.includes(result.id);
         return (
           <RecipeCard
