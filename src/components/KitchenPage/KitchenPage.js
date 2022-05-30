@@ -74,7 +74,11 @@ const KitchenPage = () => {
       return searchRecipeById(id, (index + 1) % EDAMAM_CREDENTIALS.length);
     }
     const { recipe } = data;
-    const { image, label, totalTime, mealType, ingredientLines } = recipe;
+    if (!recipe) {
+      return null
+    }
+    const { label, totalTime, mealType, ingredientLines } = recipe;
+    const image = recipe.image ? recipe.image : 'https://community.clover.com/themes/base/admin/img/default-coverImage.png'
     return {
       image,
       label,
