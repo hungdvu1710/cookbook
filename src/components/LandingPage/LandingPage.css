@@ -1,4 +1,38 @@
+
+
 body .landing-page__pagination-btn {
   display: block;
   margin-left: 30px;
+}
+
+body {
+  font-family: "Tahoma", Geneva, "Verdana", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #050605;
+  background-color: #b4dbbb;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: 30%;
+  background-size: 300px;
+  background-attachment: fixed;
+}
+
+.landing-page__logo-holder {
+  margin: 10px;
+  text-align: center;
+}
+
+#logo{
+  max-height: 50%;
+  max-width: 22%;
+}
+
+#aboutus{
+  top: 2%;
+  position: fixed;
+  right: 3%;
+  color: rgb(68, 67, 67);    
+  
 }

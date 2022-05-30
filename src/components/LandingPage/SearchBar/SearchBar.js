@@ -10,31 +10,46 @@ import getMTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBa
 import DishType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/DishType.js';
 import getDTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/DishType.js';
 import FilterCleaner from '/home/djli/cookbook/src/components/LandingPage/SearchBar/FilterCleaner.js';
+import { useUser } from "@clerk/clerk-react";
 
-function SearchBar({ placeholder, setSearchResult, setNextLink }) {
-  // const [filteredData, setFilteredData] = useState([]);
+const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
+const EDAMAM_CREDENTIALS = [
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID2,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY2,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID3,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY3,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID4,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY4,
+  },
+];
+
+function SearchBar({
+  placeholder,
+  setSearchResult,
+  setNextLink,
+  setSavedRecipe,
+}) {
+  const { isSignedIn, user } = useUser();
   const [wordEntered, setWordEntered] = useState("");
   const [userExclude, setUserExclude] = useState("");
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-
-    // const newFilter = data.filter((value) => {
-    //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
-    // });
-
-    // if (searchWord === "") {
-    //   setFilteredData([]);
-    // } else {
-    //   setFilteredData(newFilter);
-    // }
   };
   const noHandleFilter = (event) => {
     const noSearchWord = event.target.value;
     setUserExclude(noSearchWord);
   }
-
   // const clearInput = () => {
   //   setFilteredData([]);
   //   setWordEntered("");
@@ -53,15 +68,13 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
 
 
   const searchRecipe = async () => {
-    let APP_ID = "98817906";
-    let API_KEY = "5bdef1c2cd6643063f7313d060069af6";
-    let response = await fetch(
+    let data = await fetch(
       "https://api.edamam.com/api/recipes/v2?type=public&q=" +
       wordEntered +
       "&app_id=" +
-      APP_ID +
+      EDAMAM_CREDENTIALS[index].APP_ID +
       "&app_key=" +
-      API_KEY +
+      EDAMAM_CREDENTIALS[index].API_KEY +
       //health
       (getHTagName() ? "&health=" + FilterCleaner(getHTagName(), "&health=") : '') +
       //cuisine
@@ -73,24 +86,69 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
       //exclude
       (userExclude ? "&excluded=" + FilterCleaner(userExclude, "&excluded=") : '')
 
-    );
-    let data = await response.json();
+    ).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+    if (!data) {
+      return searchRecipe((index + 1)%EDAMAM_CREDENTIALS.length)
+    }
     const { hits, _links } = data;
     const searchResult = [];
     if (Object.keys(_links).length !== 0) {
-      const { next } = _links
-      setNextLink(next.href)
+      const { next } = _links;
+      setNextLink(next.href);
     } else {
-      setNextLink(null)
+      setNextLink(null);
     }
 
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const { image, label, totalTime, url, mealType } = recipe;
-      searchResult.push({ image, label, totalTime, url, mealType })
+      const {
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        uri,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      } = recipe;
+      const id = uri.slice(uri.indexOf("recipe_"));
+      searchResult.push({
+        image,
+        label,
+        totalTime,
+        url,
+        mealType,
+        id,
+        cautions,
+        cuisineType,
+        dietLabels,
+        ingredientLines,
+        calories,
+      });
     });
-    console.log(searchResult)
-    setSearchResult(searchResult)
+
+    if (isSignedIn) {
+      //send userData to BE
+      const { id } = user;
+      await fetch(BE_HOST + "api/recipes?id=" + id, {})
+        .then((response) => response.json())
+        .then((data) => {
+          setSavedRecipe(data);
+        });
+    }
+
+    setSearchResult(searchResult);
     return;
   };
 
