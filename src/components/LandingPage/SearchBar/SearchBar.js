@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useUser } from "@clerk/clerk-react";
 
-const APP_ID = process.env.REACT_APP_EDAMAM_APP_ID;
-const API_KEY = process.env.REACT_APP_EDAMAM_APP_KEY;
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
 const EDAMAM_CREDENTIALS = [
   {
@@ -13,6 +11,14 @@ const EDAMAM_CREDENTIALS = [
   {
     APP_ID: process.env.REACT_APP_EDAMAM_APP_ID2,
     API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY2,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID3,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY3,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID4,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY4,
   },
 ];
 
@@ -28,21 +34,6 @@ function SearchBar({
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-  };
-
-  const searchRecipeById = async (id) => {
-    let response = await fetch(
-      "https://api.edamam.com/api/recipes/v2/" +
-        id +
-        "?type=public&app_id=" +
-        APP_ID +
-        "&app_key=" +
-        API_KEY
-    );
-    let data = await response.json();
-    const { recipe } = data;
-    console.log(recipe);
-    return;
   };
 
   const searchRecipe = async (index) => {

@@ -2,7 +2,7 @@ import "./LandingPage.css";
 import image from "../LandingPage/bg_logo.png";
 import SearchBar from "./SearchBar/SearchBar";
 import { useUser } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RecipeCard from "../RecipeCard";
 import { Button } from "@mui/material";
 import cblogo from '../LandingPage/cb1.gif';
@@ -24,23 +24,25 @@ const LandingPage = () => {
   const [savedRecipe, setSavedRecipe] = useState([]);
   const [isAlertBoxOpen, setAlertBox] = useState(false);
 
-  if (isSignedIn) {
-    //send userData to BE
-    const { primaryEmailAddress, id } = user;
-    const userData = {
-      email: primaryEmailAddress.emailAddress,
-      id: id,
-    };
-    fetch(BE_HOST + "api/user", {
-      body: JSON.stringify(userData),
-      cache: "no-cache",
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
+  useEffect(() => {
+    if (isSignedIn) {
+      //send userData to BE
+      const { primaryEmailAddress, id } = user;
+      const userData = {
+        email: primaryEmailAddress.emailAddress,
+        id: id,
+      };
+      fetch(BE_HOST + "api/user", {
+        body: JSON.stringify(userData),
+        cache: "no-cache",
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+  }, [isSignedIn, user])
 
   const getNextRecipes = async () => {
     let data = await fetch(nextLink)
