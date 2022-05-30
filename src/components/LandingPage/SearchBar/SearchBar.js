@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import Stack from '@mui/material/Stack';
-import AllergenSelect from '/home/djli/cookbook/src/components/LandingPage/SearchBar/AllergenSelect.js';
-import getHTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/AllergenSelect.js';
-import CuisineType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/CuisineType.js';
-import getCTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/CuisineType.js';
-import MealType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/MealType.js';
-import getMTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/MealType.js';
-import DishType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/DishType.js';
-import getDTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/DishType.js';
-import FilterCleaner from '/home/djli/cookbook/src/components/LandingPage/SearchBar/FilterCleaner.js';
+import Stack from "@mui/material/Stack";
+import AllergenSelect from "./AllergenSelect";
+import CuisineType from "./CuisineType";
+import getCTagName from "./CuisineType";
+import MealType from "./MealType";
+import DishType from "./DishType";
 import { useUser } from "@clerk/clerk-react";
 
 const BE_HOST = process.env.REACT_APP_BACKEND_DOMAIN;
@@ -30,7 +26,17 @@ const EDAMAM_CREDENTIALS = [
     APP_ID: process.env.REACT_APP_EDAMAM_APP_ID4,
     API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY4,
   },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID5,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY5,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID6,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY6,
+  },
 ];
+
+const MAX_NUM_TRY = 10;
 
 function SearchBar({
   placeholder,
@@ -41,6 +47,10 @@ function SearchBar({
   const { isSignedIn, user } = useUser();
   const [wordEntered, setWordEntered] = useState("");
   const [userExclude, setUserExclude] = useState("");
+  const [cTagName, setCTagName] = useState([]);
+  const [dTagName, setDTagName] = useState([]);
+  const [mTagName, setMTagName] = useState([]);
+  const [hTagName, setHTagName] = useState([]);
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
@@ -49,11 +59,7 @@ function SearchBar({
   const noHandleFilter = (event) => {
     const noSearchWord = event.target.value;
     setUserExclude(noSearchWord);
-  }
-  // const clearInput = () => {
-  //   setFilteredData([]);
-  //   setWordEntered("");
-  // };
+  };
 
   //Example search to help understand structure:
   //https://api.edamam.com/api/recipes/v2?type=public&q=salad&app_id=98817906&app_key=5bdef1c2cd6643063f7313d060069af6
@@ -65,28 +71,63 @@ function SearchBar({
   //&excluded=lettuce&excluded=tomato
   //Randomized search my beloved :(
   //&random=true
+  const FilterCleaner = (uncleaned, searchType) => {
+    console.log(uncleaned);
+    let cleaned = "";
+    for (let i = 0; i < uncleaned.length; i++) {
+      if (uncleaned[i] == " ") {
+        cleaned += "%20";
+      }
+      if (uncleaned[i] == ",") {
+        cleaned += searchType;
+        i++;
+      } else {
+        cleaned += uncleaned[i];
+      }
+    }
+    return cleaned;
+  };
 
+  const concatFilter = (filter, searchType) => {
+    const lowerCaseFilter = filter.map((element) => {
+      return element.toLowerCase();
+    });
+    return lowerCaseFilter.join(searchType);
+  };
 
-  const searchRecipe = async () => {
+  const searchRecipe = async (index, numTry) => {
     let data = await fetch(
       "https://api.edamam.com/api/recipes/v2?type=public&q=" +
-      wordEntered +
-      "&app_id=" +
-      EDAMAM_CREDENTIALS[index].APP_ID +
-      "&app_key=" +
-      EDAMAM_CREDENTIALS[index].API_KEY +
-      //health
-      (getHTagName() ? "&health=" + FilterCleaner(getHTagName(), "&health=") : '') +
-      //cuisine
-      (getCTagName() ? "&cuisineType=" + FilterCleaner(getCTagName(), "&cuisineType=") : '') +
-      //meal
-      (getMTagName() ? "&mealType=" + FilterCleaner(getMTagName(), "&mealType=") : '') +
-      //dish
-      (getDTagName() ? "&dishType=" + FilterCleaner(getDTagName(), "&dishType=") : '') +
-      //exclude
-      (userExclude ? "&excluded=" + FilterCleaner(userExclude, "&excluded=") : '')
-
-    ).then((response) => {
+        wordEntered +
+        "&app_id=" +
+        EDAMAM_CREDENTIALS[index].APP_ID +
+        "&app_key=" +
+        EDAMAM_CREDENTIALS[index].API_KEY +
+        // //health
+        (hTagName.length > 0
+          ? "&health=" + concatFilter(hTagName, "&health=")
+          : "") +
+        //cuisine
+        (cTagName.length > 0
+          ? "&cuisineType=" + concatFilter(cTagName, "&cuisineType=")
+          : "") +
+        // (getCTagName() ? "&cuisineType=" + FilterCleaner(getCTagName(), "&cuisineType=") : '') +
+        // //meal
+        (mTagName.length > 0
+          ? "&mealType=" + concatFilter(mTagName, "&mealType=")
+          : "") +
+        // (getMTagName() ? "&mealType=" + FilterCleaner(getMTagName(), "&mealType=") : '') +
+        // //dish
+        (dTagName.length > 0
+          ? "&dishType=" + concatFilter(dTagName, "&dishType=")
+          : "") +
+        // (getDTagName() ? "&dishType=" + FilterCleaner(getDTagName(), "&dishType=") : '') +
+        //exclude
+        (userExclude
+          ? "&excluded=" + FilterCleaner(userExclude, "&excluded=")
+          : "")
+    )
+      .then((response) => {
         if (response.ok) {
           return response.json();
         }
@@ -95,9 +136,16 @@ function SearchBar({
         console.log(error);
         return null;
       });
+
     if (!data) {
-      return searchRecipe((index + 1)%EDAMAM_CREDENTIALS.length)
+      if (numTry > MAX_NUM_TRY) {
+        setSearchResult([]);
+        console.log('out of num tries')
+        return;
+      }
+      return searchRecipe((index + 1) % EDAMAM_CREDENTIALS.length, numTry + 1);
     }
+
     const { hits, _links } = data;
     const searchResult = [];
     if (Object.keys(_links).length !== 0) {
@@ -109,33 +157,35 @@ function SearchBar({
 
     hits.forEach((hit) => {
       const { recipe } = hit;
-      const {
-        image,
-        label,
-        totalTime,
-        url,
-        mealType,
-        uri,
-        cautions,
-        cuisineType,
-        dietLabels,
-        ingredientLines,
-        calories,
-      } = recipe;
-      const id = uri.slice(uri.indexOf("recipe_"));
-      searchResult.push({
-        image,
-        label,
-        totalTime,
-        url,
-        mealType,
-        id,
-        cautions,
-        cuisineType,
-        dietLabels,
-        ingredientLines,
-        calories,
-      });
+      if (recipe) {
+        const {
+          image,
+          label,
+          totalTime,
+          url,
+          mealType,
+          uri,
+          cautions,
+          cuisineType,
+          dietLabels,
+          ingredientLines,
+          calories,
+        } = recipe;
+        const id = uri.slice(uri.indexOf("recipe_"));
+        searchResult.push({
+          image,
+          label,
+          totalTime,
+          url,
+          mealType,
+          id,
+          cautions,
+          cuisineType,
+          dietLabels,
+          ingredientLines,
+          calories,
+        });
+      }
     });
 
     if (isSignedIn) {
@@ -162,43 +212,36 @@ function SearchBar({
             value={wordEntered}
             onChange={handleFilter}
           />
-          <button className="searchIcon" onClick={searchRecipe}>
+          <button
+            className="searchIcon"
+            onClick={() => {
+              searchRecipe(0, 0);
+            }}
+          >
             <SearchIcon />
           </button>
         </div>
         <div>
           <input
             type="text"
-            placeholder={'Ingredient to exclude?'}
+            placeholder={"Ingredient to exclude?"}
             value={userExclude}
             onChange={noHandleFilter}
           />
         </div>
         <div>
           <Stack direction="row" spacing={2}>
-            <AllergenSelect />
-            <CuisineType />
+            <AllergenSelect setHTagName={setHTagName} />
+            <CuisineType setCTagName={setCTagName} />
           </Stack>
         </div>
         <div>
           <Stack direction="row" spacing={2}>
-            <MealType />
-            <DishType />
+            <MealType setMTagName={setMTagName} />
+            <DishType setDTagName={setDTagName} />
           </Stack>
         </div>
       </Stack>
-
-      {/* {filteredData.length !== 0 && (
-        <div className="dataResult">
-          {filteredData.slice(0, 10).map((value, key) => {
-            return (
-              <a className="dataItem" href={value.originalURL} target="_blank" rel="noreferrer">
-                <p> {value.name} </p>
-              </a>
-            );
-          })}
-        </div>
-      )} */}
     </div>
   );
 }

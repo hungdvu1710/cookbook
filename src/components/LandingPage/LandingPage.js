@@ -149,6 +149,9 @@ const LandingPage = () => {
         setNextLink={setNextLink}
       />
       {searchResult.map((result) => {
+        if (!result) {
+          return ''
+        }
         const isSavedDisabled = savedRecipe.includes(result.id);
         return (
           <RecipeCard

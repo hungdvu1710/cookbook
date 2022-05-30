@@ -32,7 +32,7 @@ function getMTagName() {
     return mTagNamey;
 }
 
-export default function MultipleSelectCheckmarks() {
+export default function MealType(props) {
     const [mTagName, setMTagName] = React.useState([]);
 
     const handleChange = (event) => {
@@ -40,6 +40,11 @@ export default function MultipleSelectCheckmarks() {
             target: { value },
         } = event;
         setMTagName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+            mTagNamey = value,
+        );
+        props.setMTagName(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
             mTagNamey = value,

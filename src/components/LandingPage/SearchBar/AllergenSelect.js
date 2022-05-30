@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,7 +24,6 @@ const healthNames = [
     'Celery-free',
     'Crustacean-free',
     'Dairy-free',
-    'DASH',
     'Egg-free',
     'Fish-free',
     'Fodmap-free',
@@ -33,11 +32,9 @@ const healthNames = [
     'Keto-friendly',
     'Kidney-friendly',
     'Kosher',
-    'Low-fat-abs',
     'Low-potassium',
     'Low-sugar',
     'Lupine-free',
-    'Mediterranean',
     'Mollusk-free',
     'Mustard-free',
     'No-oil-added',
@@ -57,14 +54,8 @@ const healthNames = [
     'Wheat-free',
 ];
 
-let hTagNamey = "";
-
-function getHTagName() {
-    return hTagNamey;
-}
-
-export default function MultipleSelectCheckmarks() {
-    const [hTagName, setHTagName] = React.useState([]);
+const AllergenSelect = (props) => {
+    const [hTagName, setHTagName] = useState([]);
 
     const handleChange = (event) => {
         const {
@@ -73,7 +64,10 @@ export default function MultipleSelectCheckmarks() {
         setHTagName(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
-            hTagNamey = value,
+        );
+        props.setHTagName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
         );
     };
 
@@ -104,3 +98,5 @@ export default function MultipleSelectCheckmarks() {
         </div>
     );
 }
+
+export default AllergenSelect;

@@ -19,8 +19,17 @@ const EDAMAM_CREDENTIALS = [
     APP_ID: process.env.REACT_APP_EDAMAM_APP_ID4,
     API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY4,
   },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID5,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY5,
+  },
+  {
+    APP_ID: process.env.REACT_APP_EDAMAM_APP_ID6,
+    API_KEY: process.env.REACT_APP_EDAMAM_APP_KEY6,
+  },
 ];
-const MAX_NUM_TRY = 7;
+
+const MAX_NUM_TRY = 10;
 
 const KitchenPage = () => {
   const [savedRecipes, setSavedRecipes] = useState([]);
@@ -67,8 +76,9 @@ const KitchenPage = () => {
         return null;
       });
     if (!data) {
-      setNumTry((prevState) => prevState++);
+      setNumTry((prevState) => {return prevState++});
       if (numTry > MAX_NUM_TRY) {
+        setNumTry(0)
         return null;
       }
       return searchRecipeById(id, (index + 1) % EDAMAM_CREDENTIALS.length);
@@ -103,7 +113,7 @@ const KitchenPage = () => {
               <div className="kitchen-page__ingredients">
                 <h4>Ingredients:</h4>
                 {recipe.ingredientLines.map(ingredient => {
-                  return (<p>{ingredient}</p>)
+                  return (<p key={ingredient}>{ingredient}</p>)
                 })}
               </div>
             </div>

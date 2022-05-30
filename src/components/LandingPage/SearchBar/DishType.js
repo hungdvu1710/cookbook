@@ -1,4 +1,3 @@
-import * as React from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -6,6 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import { useState } from 'react';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,14 +43,19 @@ function getDTagName() {
     return dTagNamey;
 }
 
-export default function MultipleSelectCheckmarks() {
-    const [dTagName, setDTagName] = React.useState([]);
+export default function DishType(props) {
+    const [dTagName, setDTagName] = useState([]);
 
     const handleChange = (event) => {
         const {
             target: { value },
         } = event;
         setDTagName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+            dTagNamey = value,
+        );
+        props.setDTagName(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
             dTagNamey = value,

@@ -45,7 +45,7 @@ function getCTagName() {
     return cTagNamey;
 }
 
-export default function MultipleSelectCheckmarks() {
+export default function CuisineType(props) {
     const [cTagName, setCTagName] = React.useState([]);
 
     const handleChange = (event) => {
@@ -53,6 +53,11 @@ export default function MultipleSelectCheckmarks() {
             target: { value },
         } = event;
         setCTagName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+            cTagNamey = value,
+        );
+        props.setCTagName(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
             cTagNamey = value,
