@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from '@mui/material/Stack';
+import AllergenSelect from '/home/djli/cookbook/src/components/LandingPage/SearchBar/AllergenSelect.js';
+import getHTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/AllergenSelect.js';
+import CuisineType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/CuisineType.js';
+import getCTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/CuisineType.js';
+import MealType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/MealType.js';
+import getMTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/MealType.js';
+import DishType from '/home/djli/cookbook/src/components/LandingPage/SearchBar/DishType.js';
+import getDTagName from '/home/djli/cookbook/src/components/LandingPage/SearchBar/DishType.js';
+import FilterCleaner from '/home/djli/cookbook/src/components/LandingPage/SearchBar/FilterCleaner.js';
 
 function SearchBar({ placeholder, setSearchResult, setNextLink }) {
   // const [filteredData, setFilteredData] = useState([]);
@@ -32,7 +41,13 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
   // };
 
   //Example search to help understand structure:
-  //https://api.edamam.com/api/recipes/v2?type=public&q=salad&app_id=98817906&app_key=5bdef1c2cd6643063f7313d060069af6&diet=high-protein&diet=low-fat&diet=low-sodium&health=pork-free&health=vegetarian&cuisineType=Asian&cuisineType=Chinese&mealType=Dinner&mealType=Lunch&dishType=Main%20course&dishType=Side%20dish&excluded=lettuce&excluded=tomato
+  //https://api.edamam.com/api/recipes/v2?type=public&q=salad&app_id=98817906&app_key=5bdef1c2cd6643063f7313d060069af6
+  //&diet=high-protein&diet=low-fat&diet=low-sodium
+  //&health=pork-free&health=vegetarian
+  //&cuisineType=Asian&cuisineType=Chinese
+  //&mealType=Dinner&mealType=Lunch
+  //&dishType=Main%20course&dishType=Side%20dish
+  //&excluded=lettuce&excluded=tomato
   //Randomized search my beloved :(
   //&random=true
 
@@ -46,7 +61,17 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
       "&app_id=" +
       APP_ID +
       "&app_key=" +
-      API_KEY + (userExclude ? '&excluded=' + userExclude : '')
+      API_KEY +
+      //health
+      (getHTagName() ? "&health=" + FilterCleaner(getHTagName(), "&health=") : '') +
+      //cuisine
+      (getCTagName() ? "&cuisineType=" + FilterCleaner(getCTagName(), "&cuisineType=") : '') +
+      //meal
+      (getMTagName() ? "&mealType=" + FilterCleaner(getMTagName(), "&mealType=") : '') +
+      //dish
+      (getDTagName() ? "&dishType=" + FilterCleaner(getDTagName(), "&dishType=") : '') +
+      //exclude
+      (userExclude ? "&excluded=" + FilterCleaner(userExclude, "&excluded=") : '')
 
     );
     let data = await response.json();
@@ -90,6 +115,18 @@ function SearchBar({ placeholder, setSearchResult, setNextLink }) {
             value={userExclude}
             onChange={noHandleFilter}
           />
+        </div>
+        <div>
+          <Stack direction="row" spacing={2}>
+            <AllergenSelect />
+            <CuisineType />
+          </Stack>
+        </div>
+        <div>
+          <Stack direction="row" spacing={2}>
+            <MealType />
+            <DishType />
+          </Stack>
         </div>
       </Stack>
 
