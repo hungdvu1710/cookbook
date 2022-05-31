@@ -36,9 +36,9 @@ body {
   padding: 50px;
   margin: 20px;
 }
+
 #pic {
  
-
   position: relative;
   width: 400px;
   left: 40%;
@@ -46,4 +46,8 @@ body {
   height: 50%;
   width: 22%;
   size: 50px;
+}
+
+#ed{
+  position: relative;
 }

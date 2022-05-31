@@ -224,7 +224,7 @@ function SearchBar({
         <div>
           <input
             type="text"
-            placeholder={"Ingredient to exclude?"}
+            placeholder={"Ingredients to exclude? (Seperate using commas!)"}
             value={userExclude}
             onChange={noHandleFilter}
           />
